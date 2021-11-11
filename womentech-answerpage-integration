@@ -1,0 +1,212 @@
+///////////////////////////
+// HTML Content of the page
+///////////////////////////
+const html = `<!DOCTYPE html>
+<body>
+<! –– page style ––>
+  <style>
+    body {
+      background-color: rgb(186, 223, 229);
+      }
+    p    {
+      color: rgb(57, 85, 114);
+      margin-left: 150px;
+      }
+    h1   {
+      color: rgb(85, 129, 176);
+      }
+    #hidereveal, #answer {
+      background-color: rgba(225, 250, 245, 0.75);
+      color: rgb(57, 85, 114);
+      border-radius: 25px;
+      padding: 10px 40px;
+      width: 70vw;
+      margin-left: -40px;
+      }
+    
+    #hidereveal {
+      cursor: pointer;
+    }
+
+    #answer   {
+      display: none;
+      }
+    #buttons {
+      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+    }
+
+    button {
+      background-color: rgb(85, 129, 176);
+      border: none;
+      color: rgba(225, 250, 245, 0.75);
+      padding: 15px 32px;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+  <! –– page script - internal JS––>
+  <script>
+    var page = window.location.pathname
+    var page = page.slice(9, )
+    var page = parseInt(page, 10)
+    var url = page + 1;
+    var totalPages = 21
+    var randomHere= Math.floor(Math.random() * (totalPages - 1) + 1)
+    var randomAny= Math.floor(Math.random() * (17 - 1) + 1)
+    var domainNumber = Math.floor(Math.random() * (3 - 1) + 1)
+  </script>
+  <! –– page html ––>
+  <h1>Domain 1: Networking Concepts</h1>
+  <div onclick= showHide() id= hidereveal>
+    Click here to hide or reveal the answer
+  </div>
+  <p id="response"></p>
+  <p id="buttons">
+    Note: Randomize (Any) may lead to unstyled domains<br><br>\
+    <button onclick="window.location.href='https://linzinha.is/domain1/' + url;">
+      Next Question
+    </button>
+    <button onclick="window.location.href='https://linzinha.is/domain1/' + randomHere;">
+      Random (This Domain)
+    </button>
+    <button onclick="window.location.href='https://linzinha.is/domain' + domainNumber + '/' + randomAny;">
+      Random (Any Domain)
+    </button>
+  </p>
+  <! –– another script wrapped around html content ––>
+  <script>
+    var questions= [
+      // Question 1
+      "<div id= question>\
+        <b>1. Question 1</b><br>\
+          A. OPTION_A<br>\
+          B. OPTION_B<br>\
+          C. OPTION_C<br>\
+          D. OPTION_D\
+      </div>\
+          <br><br>\
+      <div id= answer>\
+        <br><br>\
+        <b>A. OPTION_A</b>\
+        More information explaining the answer\
+      </div>.",
+      // Question 2
+      "<div id= question>\
+        <b>2. Question 2</b><br>\
+        A. OPTION_A<br>\
+        B. OPTION_B<br>\
+        C. OPTION_C<br>\
+        D. OPTION_D\
+      </div>\
+        <br><br>\
+      <div id= answer>\
+        <b>B. OPTION_B</b>\
+        More information explaining the answer\
+        <br><br>\
+              </div>",
+      // Question 3
+      "<div id= question>\
+        <b>Question 3</b><br>\
+        A. OPTION_A<br>\
+        B. OPTION_B<br>\
+        C. OPTION_C<br>\
+        D. OPTION_D\
+      </div>\
+        <br><br>\
+      <div id= answer>\
+        <b>C. OPTION_C</b>\
+        More information explaining the answer\
+          <br><br>\
+              </div>",
+      // Question 4
+      "<div id= question>\
+        <b>4. Question 4</b><br>\
+        A. OPTION_A<br>\
+        B. OPTION_B<br>\
+        C. OPTION_C<br>\
+        D. OPTION_D\
+      </div>\
+        <br><br>\
+      <div id= answer>\
+        <b>D. OPTION_D</b>\
+        More information explaining the answer\
+          <br><br>\
+      </div>",
+      // Question 5
+      "<div id= question>\
+        <b>5. Question 5</b><br>\
+        A. OPTION_A<br>\
+        B. OPTION_B<br>\
+        C. OPTION_C<br>\
+        D. OPTION_D\
+      </div>\
+      <br><br>\
+      <div id= answer>\
+        <b>E??????</b>\
+        More information explaining the answer\
+          <br><br>\
+      </div>",
+    ]
+
+    //////////////////////////
+    // Page Handling Variables
+    //////////////////////////
+    // isolates the path from the URL, ex. '/domain1/1'
+    var page = window.location.pathname
+    // redefines page var, returns only the page number, ex. '1' If path changes, slice needs to change or can become unnecessary
+    var page = page.slice(9, )
+    // redefines page var again, turns the string number into a base 10 integer
+    var page = parseInt(page, 10)
+    // takes the number of questions and defines a total number of pages
+    var totalPages = questions.length
+
+    // Function to handle a number less and or greater than the actual number of questions
+    function question (page) {
+      if (page > totalPages) {
+        return "Jeepers! it looks like we don't have a question " + page + " yet. Why not submit some?"
+      } else if (page > 0) {
+        return questions[page-1]
+      } else {
+        return "invalid <br> selection!"
+      }
+    }
+    document.getElementById("response").innerHTML = question (page);
+
+    // Function to show/hide the question's answer
+    function showHide() {
+      var x = document.getElementById("answer");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    showHide()
+  </script> 
+</body>`
+
+
+/////////////////
+// Async Function
+/////////////////
+async function handleRequest(request) {
+  return new Response(html, {
+    headers: {
+      "content-type": "text/html;charset=UTF-8",
+    },
+  })
+}
+
+addEventListener("fetch", event => {
+  return event.respondWith(handleRequest(event.request))
+})
