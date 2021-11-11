@@ -1,0 +1,100 @@
+/////////////////
+// Questions List
+/////////////////
+var sentences= [
+    "1. Question 1\n \
+      A. OPTION_A\n \
+      B. OPTION_B\n \
+      C. OPTION_C\n \
+      D. OPTION_D",
+    "2. Question 2\n \
+      A. OPTION_A\n \
+      B. OPTION_B\n \
+      C. OPTION_C\n \
+      D. OPTION_D",
+    "3. Question 3\n \
+      A. OPTION_A\n \
+      B. OPTION_B\n \
+      C. OPTION_C\n \
+      D. OPTION_D",
+    "4. Question 4\n \
+      A. OPTION_A\n \
+      B. OPTION_B\n \
+      C. OPTION_C\n \
+      D. OPTION_D",
+    "5. Question 5\n \
+      A. OPTION_A\n \
+      B. OPTION_B\n \
+      C. OPTION_C\n \
+      D. OPTION_D",
+];
+
+/////////////////
+// TEMPLATE
+// ". \n \
+//       A. \n \
+//       B. \n \
+//       C. \n \
+//       D. ",
+
+/////////////////////////////
+// Randomly Select a Question
+/////////////////////////////
+
+// Variable to select a random number
+var index= Math.floor(Math.random() * (sentences.length))
+var index = parseInt(index, 10)
+var newindex = index + 1
+
+// Function to use variable to select a random sentence
+function getRandomSentence () {
+    return sentences[index];
+}
+
+////////////////////////////
+// Messaging App Integration
+/////////////////////////////
+
+// Webhook URL
+const url = "WEBHOOK_URL"
+// messaging on bot and link to answer, uses newindex to append a page number to the URL, and prints the question with getRandomSentence()
+const body = {
+    "text": "FLAVOR_TEXT\n\n \
+    Find the answer at URL_LINK" + newindex + "\n\n" + getRandomSentence (),
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Functional event listener section of the code, integrates with the cron job
+//////////////////////////////////////////////////////////////////////////////
+
+// Returns the string if content type includes application/json
+async function gatherResponse(response) {
+  const { headers } = response
+  const contentType = headers.get("content-type") || ""
+  if (contentType.includes("application/json")) {
+    return JSON.stringify(await response.json())
+  }
+  else {
+    return await response.text()
+  }
+}
+ 
+// Scheduled event listener snippet
+async function handleSchedule(scheduledDate) {
+  const init = {
+    body: JSON.stringify(body),
+    method: "POST",
+    headers: {
+      "content-type": "application/json;charset=UTF-8",
+    },
+  }
+  const response = await fetch(url, init)
+  const results = await gatherResponse(response)
+  return new Response(results, init)
+}
+
+addEventListener('scheduled', event => {
+  event.waitUntil(
+    handleSchedule(event.scheduledTime)
+  )
+})
